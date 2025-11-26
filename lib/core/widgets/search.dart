@@ -82,9 +82,9 @@ class _SearchTextFieldState extends State<SearchTextField> {
             return Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: CardWidget(
-                artistName: item['artistName'],
                 trackName: item['trackName'],
                 albumName: item['albumName'],
+                artistName: item['artistName'],
                 trackId: item['id'],
                 cardPage: () {
                   print("Clicked track id = ${item['id']}");

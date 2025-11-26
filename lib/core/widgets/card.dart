@@ -33,7 +33,7 @@ class CardWidget extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  artistName,
+                  trackName,
                   style: const TextStyle(
                     color: Color(0xFF659df2),
                     fontSize: 24,
