@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:ringo/main.dart';
 
-Future<List<Map<String, dynamic>>> searchSong(String query) async {
-  final uri = Uri.parse('${BASE_URL}search?q=$query');
+Future<List<Map<String, dynamic>>> searchSong(String trackId) async {
+  final uri = Uri.parse('${BASE_URL}?=$trackId');
 
   final response = await http.get(uri);
 

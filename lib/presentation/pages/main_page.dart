@@ -8,17 +8,17 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
+    return SafeArea(
       child: Column(
         children: [
           Header(),
           SizedBox(height: 160),
           SearchTextField(),
           Spacer(),
-          AppButton(title: 'Uplad File .txt'),
+          AppButton(title: 'Upload File .txt'),
           SizedBox(height: 10),
-          AppButton(title: 'Uplad File mp.3'),
-          SizedBox(height: 20)
+          AppButton(title: 'Upload File mp3'),
+          SizedBox(height: 20),
         ],
       ),
     );
