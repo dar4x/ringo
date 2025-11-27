@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:ringo/presentation/pages/main_page.dart';
 
-const BASE_URL = 'http://127.0.0.1:8000/song/';
-void main() {
+Future<void> main() async {
+  await dotenv.load(fileName: '.env.dev');
   runApp(MainApp());
 }
 

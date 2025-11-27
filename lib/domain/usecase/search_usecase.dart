@@ -1,24 +1,13 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:ringo/main.dart';
+// Internal packages
+// import 'package:ringo/domain/entities/song.dart';
+import 'package:ringo/domain/repositories/song_repository.dart';
 
-Future<List<Map<String, dynamic>>> searchSong(String query) async {
-  final uri = Uri.parse('${BASE_URL}search?q=$query');
+class SearchSongs {
+  final SongRepository repository;
 
-  final response = await http.get(uri);
+  SearchSongs(this.repository);
 
-  // print('Response status: ${response.statusCode}');
-  // print('Response body: ${response.body}');
-
-  if (response.statusCode == 200) {
-    final jsonBody = json.decode(response.body);
-
-    if (jsonBody is List) {
-      return List<Map<String, dynamic>>.from(jsonBody);
-    } else {
-      throw Exception("Unexpected response format: not a list");
-    }
-  } else {
-    throw Exception("Failed to load songs, status ${response.statusCode}");
+  Future<List<dynamic>> call(String query) {
+    return repository.search(query);
   }
 }

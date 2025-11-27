@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:ringo/main.dart';
 
 Future<List<Map<String, dynamic>>> searchSong(String trackId) async {
-  final uri = Uri.parse('${BASE_URL}detail?=$trackId');
+  final uri = Uri.parse('${api}detail?=$trackId');
 
   final response = await http.get(uri);
 
