@@ -1,71 +1,36 @@
+// External packages
 import 'package:flutter/material.dart';
 
-class CardWidget extends StatelessWidget {
-  final String artistName;
-  final String trackName;
-  final String albumName;
-  final VoidCallback cardPage;
-  final int trackId;
+// Internal packages
+import 'package:ringo/domain/entities/song.dart';
 
-  const CardWidget({
+class CardItem extends StatelessWidget {
+  final Song song;
+  final VoidCallback onTap;
+
+  const CardItem({
     super.key,
-    required this.artistName,
-    required this.trackName,
-    required this.albumName,
-    required this.cardPage,
-    required this.trackId,
+    required this.song,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: cardPage,
+      onTap: onTap,
       child: Container(
         width: 450,
-        height: 70,
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(12),
         ),
-        padding: const EdgeInsets.only(left: 10),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Text(
-                  trackName,
-                  style: const TextStyle(
-                    color: Color(0xFF659df2),
-                    fontSize: 24,
-                    fontFamily: 'Spoof',
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  '$albumName - ',
-                  style: const TextStyle(
-                    color: Color(0xFF70a4f3),
-                    fontFamily: 'Spoof',
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(width: 5),
-                Text(
-                  artistName,
-                  style: const TextStyle(
-                    color: Color.fromARGB(255, 173, 174, 175),
-                    fontFamily: 'Spoof',
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                )
-              ],
-            )
+            Text(song.trackName,
+                style: const TextStyle(fontSize: 22, color: Colors.black)),
+            Text("${song.albumName} - ${song.artistName}"),
           ],
         ),
       ),

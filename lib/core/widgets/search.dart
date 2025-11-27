@@ -1,111 +1,53 @@
+// External packages
 import 'package:flutter/material.dart';
+
+// Internal packages
 import 'package:ringo/core/widgets/card.dart';
-import 'package:ringo/domain/usecase/search_usecase.dart';
 import 'package:ringo/presentation/pages/detail_page.dart';
+import 'package:ringo/presentation/viewmodels/search_viewmodel.dart';
 
-class SearchTextField extends StatefulWidget {
-  const SearchTextField({super.key});
+class SearchWidget extends StatelessWidget {
+  final SearchViewModel vm;
 
-  @override
-  _SearchTextFieldState createState() => _SearchTextFieldState();
-}
-
-class _SearchTextFieldState extends State<SearchTextField> {
-  final TextEditingController _controller = TextEditingController();
-
-  List<Map<String, dynamic>> _result = [];
-
-  void _search() async {
-    final query = _controller.text.trim();
-    if (query.isEmpty) return;
-
-    final results = await searchSong(query);
-    print('[RESULT] ${results}');
-    setState(() => _result = results);
-  }
+  const SearchWidget({super.key, required this.vm});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const Text(
-          'Search the artist or song',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w300,
-            fontSize: 46,
-            fontFamily: 'Spoof',
-          ),
-        ),
-
-        const SizedBox(height: 20),
-
-        // SEARCH FIELD
-        Container(
-          width: 450,
-          height: 50,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(50),
-            border: Border.all(
-              width: 4,
-              color: const Color(0xFFdedaff),
-            ),
-          ),
-          child: TextField(
-            controller: _controller,
-            onSubmitted: (_) => _search(),
-            cursorColor: const Color(0xFF7c7c7c),
-            style: const TextStyle(
-              fontFamily: 'Spoof',
-              fontWeight: FontWeight.w500,
-              color: Color.fromARGB(255, 100, 100, 100),
-            ),
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              hintText: 'Search...',
-              prefixIcon: Icon(
-                Icons.audiotrack_sharp,
-                color: Color(0xFF7c7c7c),
-                size: 16,
+    return AnimatedBuilder(
+      animation: vm, // подписка на notifyListeners
+      builder: (context, _) {
+        return Column(
+          children: [
+            _SearchField(onSubmit: vm.search),
+            const SizedBox(height: 20),
+            ...vm.results.map(
+              (song) => CardItem(
+                song: song,
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => DetailPage(songId: song.id),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
+          ],
+        );
+      },
+    );
+  }
+}
 
-        const SizedBox(height: 20),
+class _SearchField extends StatelessWidget {
+  final Function(String) onSubmit;
 
-        ..._result.map(
-          (item) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: CardWidget(
-                trackName: item['trackName'],
-                albumName: item['albumName'],
-                artistName: item['artistName'],
-                trackId: item['id'],
-                cardPage: () {
-                  print("Clicked track id = ${item['id']}");
+  const _SearchField({required this.onSubmit});
 
-                  // Навигация на страницу деталей:
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => DetailPage(
-                        trackId: item['id'],
-                        artistName: item['artistName'],
-                        trackName: item['trackName'],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            );
-          },
-        ).toList(),
-      ],
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      decoration: InputDecoration(hintText: "Search song"),
+      onSubmitted: onSubmit,
     );
   }
 }

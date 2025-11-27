@@ -6,12 +6,12 @@ import 'package:http/http.dart' as http;
 import 'package:ringo/core/config/env.dart';
 
 class ApiCleint {
-  final http.Client client = http.Client();
+  final http.Client _client = http.Client();
 
-  Future<http.Response> get(String path, {Map<String, String>? params}) async {
+  Future<dynamic> get(String path, {Map<String, String>? params}) async {
     final uri = Uri.parse(Env.baseUrl + path).replace(queryParameters: params);
 
-    final response = await client.get(uri);
+    final response = await _client.get(uri);
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return json.decode(response.body);
