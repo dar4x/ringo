@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ringo/core/themes/app_theme.dart';
 
 class AppButton extends StatelessWidget {
   final String title;
@@ -14,29 +15,23 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: 450,
-      height: 60,
+      height: 65,
+      decoration: AppTheme.neumorphic(radius: 22),
       child: ElevatedButton(
         onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-            side: const BorderSide(
-              color: Color(0xFFdedaff),
-              width: 4,
-            ),
-          ),
-          elevation: 0,
+        style: AppTheme.buttonStyle.copyWith(
+          backgroundColor: MaterialStateProperty.all(Colors.transparent),
+          shadowColor: MaterialStateProperty.all(Colors.transparent),
+          elevation: MaterialStateProperty.all(0),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(title, style: const TextStyle(fontSize: 18)),
+            Text(title, style: AppTheme.body.copyWith(fontSize: 20)),
             const SizedBox(width: 10),
-            Icon(icon, size: 20),
+            Icon(icon, size: 22, color: Colors.white),
           ],
         ),
       ),

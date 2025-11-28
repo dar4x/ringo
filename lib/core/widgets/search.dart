@@ -1,5 +1,6 @@
 // External packages
 import 'package:flutter/material.dart';
+import 'package:ringo/core/themes/app_theme.dart';
 
 // Internal packages
 import 'package:ringo/core/widgets/card.dart';
@@ -45,9 +46,24 @@ class _SearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      decoration: InputDecoration(hintText: "Search song"),
-      onSubmitted: onSubmit,
+    return Container(
+      width: 450,
+      decoration: AppTheme.neumorphic(),
+      child: TextField(
+        style: const TextStyle(color: Colors.white, fontFamily: 'Spoof'),
+        decoration: InputDecoration(
+          hintText: "Search song",
+          prefixIcon: Container(
+            margin: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: AppTheme.midnightLight,
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.search, color: Colors.white70),
+          ),
+        ),
+        onSubmitted: onSubmit,
+      ),
     );
   }
 }
