@@ -48,7 +48,9 @@ class _MainPageState extends State<MainPage> {
           SizedBox(height: 160),
 
           // ✔️ Передаем уже созданный VM
-          SearchWidget(vm: searchVM),
+          Expanded(
+            child: SearchWidget(vm: searchVM),
+          ),
 
           Spacer(),
 

@@ -15,24 +15,46 @@ class SearchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: vm, // подписка на notifyListeners
+      animation: vm,
       builder: (context, _) {
-        return Column(
-          children: [
-            _SearchField(onSubmit: vm.search),
-            const SizedBox(height: 20),
-            ...vm.results.map(
-              (song) => CardItem(
-                song: song,
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => DetailPage(songId: song.id),
-                  ),
-                ),
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final double maxWidth = constraints.maxWidth;
+            final double horizontalPadding = maxWidth * 0.03;
+
+            return Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: horizontalPadding.clamp(10, 18),
+                vertical: 10,
               ),
-            ),
-          ],
+              child: Column(
+                children: [
+                  _SearchField(onSubmit: vm.search),
+                  const SizedBox(height: 20),
+
+                  // 🔥 Теперь это скролящиеся карточки
+                  Expanded(
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: vm.results.length,
+                      itemBuilder: (_, i) {
+                        final song = vm.results[i];
+                        return CardItem(
+                          song: song,
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => DetailPage(songId: song.id),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
         );
       },
     );

@@ -23,12 +23,18 @@ class DetailPage extends StatelessWidget {
               return const Center(
                 child: CircularProgressIndicator(color: Colors.white),
               );
-            } else if (snap.hasError) {
+            }
+
+            if (snap.hasError) {
               return Center(
-                child: Text("Ошибка: ${snap.error}",
-                    style: AppTheme.body.copyWith(color: Colors.redAccent)),
+                child: Text(
+                  "Ошибка: ${snap.error}",
+                  style: AppTheme.body.copyWith(color: Colors.redAccent),
+                ),
               );
-            } else if (!snap.hasData) {
+            }
+
+            if (!snap.hasData) {
               return const Center(
                 child: Text("Нет данных", style: AppTheme.body),
               );
@@ -37,50 +43,75 @@ class DetailPage extends StatelessWidget {
             final song = snap.data!;
 
             return SafeArea(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // 🎵 Название
-                    Text(song.trackName, style: AppTheme.title),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final double padding =
+                      (constraints.maxWidth * 0.05).clamp(12, 20);
 
-                    const SizedBox(height: 6),
-
-                    // 👤 Артист
-                    Text(song.artistName, style: AppTheme.subtitle),
-
-                    // 💿 Альбом
-                    Text(song.albumName,
-                        style: AppTheme.body.copyWith(color: Colors.white38)),
-
-                    const SizedBox(height: 30),
-
-                    // 📄 Lyrics card (по теме)
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: AppTheme.cardStyle,
-                      child: Text(song.plainLyrics, style: AppTheme.lyrics),
-                    ),
-
-                    const SizedBox(height: 30),
-
-                    // 🔘 Start Lesson button
-                    Center(
-                      child: SizedBox(
-                        width: 260,
-                        height: 60,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: AppTheme.buttonStyle,
-                          child: const Text("Start Lesson"),
+                  return SingleChildScrollView(
+                    padding: EdgeInsets.all(padding),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // 🔥 Заголовок + артист в одну строку
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                song.trackName,
+                                style: AppTheme.title.copyWith(fontSize: 28),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              song.artistName,
+                              style: AppTheme.subtitle.copyWith(fontSize: 18),
+                            ),
+                          ],
                         ),
-                      ),
-                    ),
 
-                    const SizedBox(height: 30),
-                  ],
-                ),
+                        const SizedBox(height: 10),
+
+                        // 💿 Альбом
+                        Text(
+                          song.albumName,
+                          style: AppTheme.body.copyWith(
+                            color: Colors.white38,
+                            fontSize: 15,
+                          ),
+                        ),
+
+                        const SizedBox(height: 25),
+
+                        // 📄 Lyrics — на весь экран
+                        Container(
+                          padding: const EdgeInsets.all(20),
+                          width: constraints.maxWidth,
+                          decoration: AppTheme.cardStyle,
+                          child: Text(
+                            song.plainLyrics,
+                            style: AppTheme.lyrics,
+                          ),
+                        ),
+
+                        const SizedBox(height: 30),
+
+                        Center(
+                          child: SizedBox(
+                            width: constraints.maxWidth * 0.6,
+                            height: 60,
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: AppTheme.buttonStyle,
+                              child: const Text("Start Lesson"),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             );
           },
