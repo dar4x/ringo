@@ -76,6 +76,26 @@ class AppTheme {
     );
   }
 
+  static BoxDecoration innerNeumorphic({double radius = 20}) {
+    return BoxDecoration(
+      color: midnight, // тот же фон, что и у экрана
+      borderRadius: BorderRadius.circular(radius),
+      boxShadow: [
+        // свет сверху, тёмный снизу – создаёт ощущение «впадины»
+        BoxShadow(
+          color: Colors.black.withOpacity(0.7),
+          offset: const Offset(4, 4),
+          blurRadius: 12,
+        ),
+        BoxShadow(
+          color: midnightLight.withOpacity(0.9),
+          offset: const Offset(-4, -4),
+          blurRadius: 12,
+        ),
+      ],
+    );
+  }
+
   // ------------------------------------
   // 🟦 Input Style
   // ------------------------------------

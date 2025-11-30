@@ -15,7 +15,6 @@ class SongRemoteDataSource {
 
   Future<SongModel> getSongById(int id) async {
     final data = await client.get('song/detail?id=$id');
-    final map = (data as List<dynamic>).first as Map<String, dynamic>;
-    return SongModel.fromJson(map);
+    return SongModel.fromJson(data as Map<String, dynamic>);
   }
 }

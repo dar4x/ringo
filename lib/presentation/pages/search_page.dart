@@ -1,22 +1,26 @@
+// External packages
 import 'package:flutter/material.dart';
+
+// Internal packages
 import 'package:ringo/core/network/api_client.dart';
 import 'package:ringo/core/themes/app_theme.dart';
 import 'package:ringo/core/widgets/button.dart';
 import 'package:ringo/core/widgets/cards_area.dart';
 import 'package:ringo/core/widgets/header.dart';
+import 'package:ringo/core/widgets/search_field.dart';
 import 'package:ringo/data/datasources/song_remote_datasource.dart';
 import 'package:ringo/data/repository/song_repository_impl.dart';
 import 'package:ringo/domain/usecase/search_usecase.dart';
 import 'package:ringo/presentation/viewmodels/search_viewmodel.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _SearchScreenState extends State<SearchScreen> {
   late final SearchViewModel searchVM;
 
   @override
@@ -65,6 +69,22 @@ class _MainPageState extends State<MainPage> {
             const SizedBox(height: 20),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SearchFieldWrapper extends StatelessWidget {
+  final SearchViewModel vm;
+
+  const SearchFieldWrapper({super.key, required this.vm});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        width: 450,
+        child: SearchField(onSubmit: vm.search),
       ),
     );
   }
