@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:ringo/core/themes/app_theme.dart';
 import 'package:ringo/domain/entities/song.dart';
 import 'package:ringo/domain/usecase/get_song_by_id.dart';
+import 'package:ringo/presentation/pages/lesson_page.dart';
 
 class DetailPage extends StatelessWidget {
   final int songId;
@@ -102,9 +103,15 @@ class DetailPage extends StatelessWidget {
                             width: constraints.maxWidth * 0.6,
                             height: 60,
                             child: ElevatedButton(
-                              onPressed: () {},
-                              style: AppTheme.buttonStyle,
                               child: const Text("Start Lesson"),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => LessonPage(songId: song.id),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ),

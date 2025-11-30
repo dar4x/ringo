@@ -4,6 +4,11 @@ import 'package:ringo/data/datasources/song_remote_datasource.dart';
 import 'package:ringo/data/repository/song_repository_impl.dart';
 import 'package:ringo/domain/repositories/song_repository.dart';
 import 'package:ringo/domain/usecase/get_song_by_id.dart';
+import 'package:ringo/data/datasources/lesson_remote_datasource.dart';
+import 'package:ringo/data/repository/lesson_repository_impl.dart';
+import 'package:ringo/domain/repositories/lesson_repository.dart';
+import 'package:ringo/domain/usecase/get_lesson_word.dart';
+import 'package:ringo/domain/usecase/review_lesson_word.dart';
 
 void setupDependencies() {
   final sl = GetIt.instance;
@@ -20,4 +25,14 @@ void setupDependencies() {
 
   // UseCase
   sl.registerLazySingleton<GetSongById>(() => GetSongById(sl()));
+
+  // Lessons
+  sl.registerLazySingleton<LessonRemoteDataSource>(
+      () => LessonRemoteDataSource(sl()));
+
+  sl.registerLazySingleton<LessonRepository>(() => LessonRepositoryImpl(sl()));
+
+  sl.registerLazySingleton<GetLessonWord>(() => GetLessonWord(sl()));
+
+  sl.registerLazySingleton<ReviewLessonWord>(() => ReviewLessonWord(sl()));
 }
