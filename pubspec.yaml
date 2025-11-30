@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_dotenv: ^6.0.0
+  get_it: ^9.1.1
   http: ^1.1.0
 
 dev_dependencies:
@@ -18,6 +20,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - .env.dev
 
   fonts:
     - family: Spoof

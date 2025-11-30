@@ -2,12 +2,10 @@
 import 'package:ringo/domain/entities/song.dart';
 import 'package:ringo/domain/repositories/song_repository.dart';
 
-class SearchSongs {
+class GetSongById {
   final SongRepository repository;
 
-  SearchSongs(this.repository);
+  GetSongById(this.repository);
 
-  Future<List<Song>> call(String query) {
-    return repository.search(query);
-  }
+  Future<Song> call(int id) => repository.getSongById(id);
 }

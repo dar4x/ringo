@@ -1,24 +1,27 @@
+// External packages
 import 'package:flutter/material.dart';
+
+// Internal packages
 import 'package:ringo/core/network/api_client.dart';
 import 'package:ringo/core/themes/app_theme.dart';
 import 'package:ringo/core/widgets/button.dart';
 import 'package:ringo/core/widgets/cards_area.dart';
 import 'package:ringo/core/widgets/header.dart';
+import 'package:ringo/core/widgets/search_field.dart';
 import 'package:ringo/data/datasources/song_remote_datasource.dart';
 import 'package:ringo/data/repository/song_repository_impl.dart';
 import 'package:ringo/domain/usecase/search_usecase.dart';
 import 'package:ringo/presentation/viewmodels/search_viewmodel.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _SearchScreenState extends State<SearchScreen> {
   late final SearchViewModel searchVM;
-  String lastQuery = "";
 
   @override
   void initState() {
@@ -28,13 +31,6 @@ class _MainPageState extends State<MainPage> {
     final repository = SongRepositoryImpl(dataSource);
     final searchUseCase = SearchSongs(repository);
     searchVM = SearchViewModel(searchUseCase);
-  }
-
-  Future<void> _onSearch(String query) async {
-    setState(() {
-      lastQuery = query;
-    });
-    await searchVM.search(query);
   }
 
   @override
@@ -53,31 +49,7 @@ class _MainPageState extends State<MainPage> {
         child: Column(
           children: [
             const Header(),
-            const SizedBox(height: 40),
-
-            // Подпись над инпутом
-            Text(
-              "Search the artist or song",
-              style: AppTheme.body.copyWith(color: Colors.white),
-            ),
-            const SizedBox(height: 12),
-
-            // Инпут поиска
-
-            // Строка "Search for: Result" после первого поиска
-            if (lastQuery.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Search for: $lastQuery",
-                    style: AppTheme.body.copyWith(color: Colors.white70),
-                  ),
-                ),
-              ),
-            if (lastQuery.isNotEmpty) const SizedBox(height: 8),
-
+            const SizedBox(height: 60),
             SizedBox(
               height: concaveHeight.clamp(220, size.height * 0.6),
               child: CardsConcaveArea(vm: searchVM),
@@ -97,6 +69,22 @@ class _MainPageState extends State<MainPage> {
             const SizedBox(height: 20),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SearchFieldWrapper extends StatelessWidget {
+  final SearchViewModel vm;
+
+  const SearchFieldWrapper({super.key, required this.vm});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        width: 450,
+        child: SearchField(onSubmit: vm.search),
       ),
     );
   }
