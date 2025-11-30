@@ -13,6 +13,20 @@ class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(
+          "Song Detail",
+          style: AppTheme.title.copyWith(fontSize: 22),
+        ),
+        centerTitle: true,
+      ),
+      extendBodyBehindAppBar: true,
       body: Container(
         decoration: const BoxDecoration(
           gradient: AppTheme.backgroundGradient,
@@ -54,7 +68,6 @@ class DetailPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // 🔥 Заголовок + артист в одну строку
                         Row(
                           children: [
                             Expanded(
@@ -71,10 +84,7 @@ class DetailPage extends StatelessWidget {
                             ),
                           ],
                         ),
-
                         const SizedBox(height: 10),
-
-                        // 💿 Альбом
                         Text(
                           song.albumName,
                           style: AppTheme.body.copyWith(
@@ -82,10 +92,7 @@ class DetailPage extends StatelessWidget {
                             fontSize: 15,
                           ),
                         ),
-
                         const SizedBox(height: 25),
-
-                        // 📄 Lyrics — на весь экран
                         Container(
                           padding: const EdgeInsets.all(20),
                           width: constraints.maxWidth,
@@ -95,9 +102,7 @@ class DetailPage extends StatelessWidget {
                             style: AppTheme.lyrics,
                           ),
                         ),
-
                         const SizedBox(height: 30),
-
                         Center(
                           child: SizedBox(
                             width: constraints.maxWidth * 0.6,

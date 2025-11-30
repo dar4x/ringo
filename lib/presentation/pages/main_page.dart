@@ -18,6 +18,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   late final SearchViewModel searchVM;
+  String lastQuery = "";
 
   @override
   void initState() {
@@ -27,6 +28,13 @@ class _MainPageState extends State<MainPage> {
     final repository = SongRepositoryImpl(dataSource);
     final searchUseCase = SearchSongs(repository);
     searchVM = SearchViewModel(searchUseCase);
+  }
+
+  Future<void> _onSearch(String query) async {
+    setState(() {
+      lastQuery = query;
+    });
+    await searchVM.search(query);
   }
 
   @override
@@ -45,7 +53,31 @@ class _MainPageState extends State<MainPage> {
         child: Column(
           children: [
             const Header(),
-            const SizedBox(height: 60),
+            const SizedBox(height: 40),
+
+            // Подпись над инпутом
+            Text(
+              "Search the artist or song",
+              style: AppTheme.body.copyWith(color: Colors.white),
+            ),
+            const SizedBox(height: 12),
+
+            // Инпут поиска
+
+            // Строка "Search for: Result" после первого поиска
+            if (lastQuery.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Search for: $lastQuery",
+                    style: AppTheme.body.copyWith(color: Colors.white70),
+                  ),
+                ),
+              ),
+            if (lastQuery.isNotEmpty) const SizedBox(height: 8),
+
             SizedBox(
               height: concaveHeight.clamp(220, size.height * 0.6),
               child: CardsConcaveArea(vm: searchVM),

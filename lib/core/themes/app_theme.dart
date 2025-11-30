@@ -48,7 +48,6 @@ class AppTheme {
 
   static const TextStyle lyrics = TextStyle(
     fontFamily: 'Spoof',
-    fontFamilyFallback: ['NotoSans', 'Roboto'],
     fontSize: 20,
     height: 1.5,
     color: Colors.white,

@@ -9,8 +9,24 @@ class ApiCleint {
     final uri = Uri.parse(Env.baseUrl + path).replace(queryParameters: params);
     final response = await _client.get(uri);
 
+    // Лог сырого тела (как есть, может быть "кракозябры")
+    print('GET $uri');
+    print(
+      'RAW BODY: ${response.body.substring(0, response.body.length.clamp(0, 200))}',
+    );
+
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      return json.decode(response.body);
+      // ВАЖНО: декодируем байты как UTF‑8
+      final utf8Body = utf8.decode(response.bodyBytes);
+      final decoded = json.decode(utf8Body);
+
+      // Лог уже нормальных данных
+      if (decoded is List && decoded.isNotEmpty) {
+        print('FIRST TRACK: ${decoded.first['trackName']}');
+      }
+      print('DECODED TYPE: ${decoded.runtimeType}');
+
+      return decoded;
     } else {
       throw Exception("Api error: ${response.statusCode}");
     }
@@ -26,7 +42,8 @@ class ApiCleint {
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       if (response.body.isEmpty) return null;
-      return json.decode(response.body);
+      final utf8Body = utf8.decode(response.bodyBytes);
+      return json.decode(utf8Body);
     } else {
       throw Exception("Api error: ${response.statusCode}");
     }

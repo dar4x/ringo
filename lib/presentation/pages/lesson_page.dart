@@ -29,6 +29,21 @@ class _LessonPageState extends State<LessonPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Кнопка "назад" + заголовок
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(
+          "Lesson",
+          style: AppTheme.title.copyWith(fontSize: 22),
+        ),
+        centerTitle: true,
+      ),
+      extendBodyBehindAppBar: true,
       body: Container(
         decoration: const BoxDecoration(
           gradient: AppTheme.backgroundGradient,
@@ -50,7 +65,6 @@ class _LessonPageState extends State<LessonPage> {
                   ),
                 );
               }
-
               if (vm.current == null) {
                 return Center(
                   child: Text(
@@ -62,59 +76,61 @@ class _LessonPageState extends State<LessonPage> {
 
               final w = vm.current!;
 
-              return Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      "Lesson",
-                      style: AppTheme.title.copyWith(fontSize: 26),
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: AppTheme.cardStyle,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            w.display,
-                            style: AppTheme.title.copyWith(fontSize: 24),
-                          ),
-                          const SizedBox(height: 12),
-                          if (w.translation != null)
-                            Text(
-                              w.translation!,
-                              style: AppTheme.body.copyWith(fontSize: 18),
-                            ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Text(
-                      "Как легко было это слово?",
-                      style: AppTheme.body,
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              // Центруем карточку и кнопки
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 500),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        _gradeButton("Трудно", 2),
-                        _gradeButton("Норм", 4),
-                        _gradeButton("Легко", 5),
+                        Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: AppTheme.cardStyle,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                w.display,
+                                style: AppTheme.title.copyWith(fontSize: 24),
+                              ),
+                              const SizedBox(height: 12),
+                              if (w.translation != null)
+                                Text(
+                                  w.translation!,
+                                  style: AppTheme.body.copyWith(fontSize: 18),
+                                ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        Text(
+                          "Как легко было это слово?",
+                          style: AppTheme.body,
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _gradeButton("Трудно", 2),
+                            _gradeButton("Норм", 4),
+                            _gradeButton("Легко", 5),
+                          ],
+                        ),
+                        const SizedBox(height: 24),
+                        SizedBox(
+                          height: 60,
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () => vm.loadNext(widget.songId),
+                            style: AppTheme.buttonStyle,
+                            child: const Text("Следующее слово"),
+                          ),
+                        ),
                       ],
                     ),
-                    const Spacer(),
-                    SizedBox(
-                      height: 60,
-                      child: ElevatedButton(
-                        onPressed: () => vm.loadNext(widget.songId),
-                        style: AppTheme.buttonStyle,
-                        child: const Text("Следующее слово"),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               );
             },
